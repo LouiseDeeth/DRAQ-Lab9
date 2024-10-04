@@ -1,12 +1,14 @@
-import logo from './logo.svg';
-import './App.css';
+import Header from './components/header';
+import Content from './components/Content';
+import Footer from './components/footer';
 
+//Updated the App.js file
 function App() {
   return (
-    //Added h1 header and h2 present time
-    <div className="App">
-          <h1>Hello World</h1>
-          <h2>It is {new Date().toLocaleTimeString()}.</h2>
+    <div>
+      <Header />
+      <Content />
+      <Footer />
     </div>
   );
 }
