@@ -3,21 +3,10 @@ import './App.css';
 
 function App() {
   return (
+    //Added h1 header and h2 present time
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+          <h1>Hello World</h1>
+          <h2>It is {new Date().toLocaleTimeString()}.</h2>
     </div>
   );
 }
