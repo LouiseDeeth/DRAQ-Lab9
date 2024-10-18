@@ -1,37 +1,35 @@
 import Movies from "./movies";
+import { useEffect, useState } from "react";
+import axios from "axios";  
 
 //Added a read.js file
-const Read = () => {
-    const data = [
-        {
-            "Title": "Avengers: Infinity War",
-            "Year": "2018",
-            "imdbID": "tt4154756",
-            "Type": "movie",
-            "Poster": "https://m.media-amazon.com/images/M/MV5BMjMxNjY2MDU1OV5BMl5BanBnXkFtZTgwNzY1MTUwNTM@._V1_SX300.jpg"
-          },
-          {
-            "Title": "Captain America: Civil War",
-            "Year": "2016",
-            "imdbID": "tt3498820",
-            "Type": "movie",
-            "Poster": "https://m.media-amazon.com/images/M/MV5BMjQ0MTgyNjAxMV5BMl5BanBnXkFtZTgwNjUzMDkyODE@._V1_SX300.jpg"
-          },
-          {
-            "Title": "World War Z",
-            "Year": "2013",
-            "imdbID": "tt0816711",
-            "Type": "movie",
-            "Poster": "https://m.media-amazon.com/images/M/MV5BNDQ4YzFmNzktMmM5ZC00MDZjLTk1OTktNDE2ODE4YjM2MjJjXkEyXkFqcGdeQXVyNTA4NzY1MzY@._V1_SX300.jpg"
-          }
-    ];
-    
-    return (
-        <div>
-            <h3>Hello from the Read component</h3>
-            <Movies myMovies={data} />
-        </div>
-    );
-  }
-  
-  export default Read;
+function Read() {
+  const [movies, setMovies] = useState([]); //UseState is a built-in hook in React that allows you to add state variables to functional components
+
+  //useEffect is a React Hook that lets you synchronize a component with an external system.
+  //Some components need to stay connected to the network, some browser API, or a third-party library, 
+  //while they are displayed on the page. These systems aren’t controlled by React, so they are called external.
+  //To connect your component to some external system, call useEffect at the top level of your component:
+  useEffect(() => {
+    //Axios is a Promise-based HTTP client used to make requests to a server. It allows you to send 
+    //asynchronous HTTP requests (such as GET or POST requests) to REST endpoints and handle responses.
+    axios.get('https://jsonblob.com/api/jsonblob/1287718524221775872') //this line runs async
+      //a response comes back
+      .then((response) => {
+        console.log(response.data);
+        setMovies(response.data.movies);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+
+  return (
+    <div>
+      <h3>Hello from the Read component</h3>
+      <Movies myMovies={movies} />
+    </div>
+  );
+}
+
+export default Read;
