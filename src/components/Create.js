@@ -1,3 +1,4 @@
+import axios from "axios";
 import { useState } from "react";
 
 //Added a read.js file
@@ -10,8 +11,14 @@ const Create = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(title, year, poster); //log info inputted to console
-  }
+    console.log(`Title: ${title}, Year: ${year}, Poster: ${poster}`); //log info inputted to console
+    const movie = {title: title, year: year, poster: poster};
+
+      axios.post('http://localhost:4000/api/movies', movie)
+      .then((res) => console.log(res.data))
+      .catch((err) => console.log(err.data));
+    };
+  
   return (
     <div>
       <h3>Hello from create component!</h3>

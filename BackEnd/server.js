@@ -1,6 +1,17 @@
 const express = require('express');
 const app = express();
 const port = 4000;
+//What CORS is, why it's important for communication between the frontend and backend when 
+//running on different domains or ports, and how to enable CORS in a Node/Express application.
+const cors = require('cors');
+app.use(cors());
+
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
 
 //error handling to catch any server errors
 app.use((err, req, res, next) => {
@@ -15,6 +26,10 @@ app.use(express.static('public'));
 /*app.get('/', (req, res) => {
     res.send('Hello World');
 });*/
+
+const bodyParser = require('body-parser');
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
 //Add a movies route that returns a list of movie objects in JSON format
 app.get('/api/movies', (req, res) => {
@@ -43,6 +58,11 @@ app.get('/api/movies', (req, res) => {
     ];
     res.status(200).json({ movies });
 });
+
+app.post('/api/movies',(req, res) =>{
+    console.log("Movies: "+req.body.title);
+    res.send("movies received")
+})
 
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
