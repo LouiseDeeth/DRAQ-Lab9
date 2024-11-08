@@ -13,7 +13,7 @@ function Read() {
   useEffect(() => {
     //Axios is a Promise-based HTTP client used to make requests to a server. It allows you to send 
     //asynchronous HTTP requests (such as GET or POST requests) to REST endpoints and handle responses.
-    axios.get('https://jsonblob.com/api/jsonblob/1287718524221775872') //this line runs async
+    axios.get('http://localhost:4000/api/movies') //this line runs async
       //a response comes back
       .then((response) => {
         console.log(response.data);
