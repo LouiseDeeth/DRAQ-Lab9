@@ -57,7 +57,8 @@ app.get('/api/movies', async (req, res) => {
 //method to retrieve a specific movie by its ID
 app.get('/api/movie/:id', async (req, res) => {
     const movie = await movieModel.findById(req.params.id);
-    res.send(movie);
+    res.json(movie);
+    /*res.send(movie);  // same as line above*/
   });
 
 //method to add new movie records
