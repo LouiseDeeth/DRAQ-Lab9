@@ -22,7 +22,6 @@ app.use((err, req, res, next) => {
 //Serve static assets: Set up middleware to serve all static files (CSS, JS, etc.) from a public directory.
 app.use(express.static('public'));
 
-
 /*app.get('/', (req, res) => {
     res.send('Hello World');
 });*/
@@ -50,44 +49,48 @@ const movieSchema = new mongoose.Schema({
 const movieModel = new mongoose.model('myMovies', movieSchema);
 
 //Add a movies route that returns a list of movie objects in JSON format
-app.get('/api/movies', (req, res) => {
-    const movies = [
-        {
-            "Title": "Avengers: Infinity War (server)",
-            "Year": "2018",
-            "imdbID": "tt4154756",
-            "Type": "movie",
-            "Poster": "https://m.media-amazon.com/images/M/MV5BMjMxNjY2MDU1OV5BMl5BanBnXkFtZTgwNzY1MTUwNTM@._V1_SX300.jpg"
-        },
-        {
-            "Title": "Captain America: Civil War (server)",
-            "Year": "2016",
-            "imdbID": "tt3498820",
-            "Type": "movie",
-            "Poster": "https://m.media-amazon.com/images/M/MV5BMjQ0MTgyNjAxMV5BMl5BanBnXkFtZTgwNjUzMDkyODE@._V1_SX300.jpg"
-        },
-        {
-            "Title": "World War Z (server)",
-            "Year": "2013",
-            "imdbID": "tt0816711",
-            "Type": "movie",
-            "Poster": "https://m.media-amazon.com/images/M/MV5BNDQ4YzFmNzktMmM5ZC00MDZjLTk1OTktNDE2ODE4YjM2MjJjXkEyXkFqcGdeQXVyNTA4NzY1MzY@._V1_SX300.jpg"
-        }
-    ];
-    res.status(200).json({ movies });
+app.get('/api/movies', async (req, res) => {
+    const movies = await movieModel.find({}); //The empty object {} as an argument means it fetches all documents in the movies collection.
+    res.status(200).json( {movies} );
 });
+
+//method to retrieve a specific movie by its ID
+app.get('/api/movie/:id', async (req, res) => {
+    const movie = await movieModel.findById(req.params.id);
+    res.send(movie);
+  });
 
 //method to add new movie records
 app.post('/api/movies', async (req, res) =>{
     console.log("Movies: "+req.body.title);
     const { title, year, poster } = req.body;
-
     const newMovie = new movieModel({ title, year, poster });
     await newMovie.save();
-
     res.status(201).json({ message: 'Movie created successfully', movie: newMovie });
 })
 
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
 });
+/*
+{
+    "Title": "Avengers: Infinity War (server)",
+    "Year": "2018",
+    "imdbID": "tt4154756",
+    "Type": "movie",
+    "Poster": "https://m.media-amazon.com/images/M/MV5BMjMxNjY2MDU1OV5BMl5BanBnXkFtZTgwNzY1MTUwNTM@._V1_SX300.jpg"
+},
+{
+    "Title": "Captain America: Civil War (server)",
+    "Year": "2016",
+    "imdbID": "tt3498820",
+    "Type": "movie",
+    "Poster": "https://m.media-amazon.com/images/M/MV5BMjQ0MTgyNjAxMV5BMl5BanBnXkFtZTgwNjUzMDkyODE@._V1_SX300.jpg"
+},
+{
+    "Title": "World War Z (server)",
+    "Year": "2013",
+    "imdbID": "tt0816711",
+    "Type": "movie",
+    "Poster": "https://m.media-amazon.com/images/M/MV5BNDQ4YzFmNzktMmM5ZC00MDZjLTk1OTktNDE2ODE4YjM2MjJjXkEyXkFqcGdeQXVyNTA4NzY1MzY@._V1_SX300.jpg"
+}*/

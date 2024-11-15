@@ -14,9 +14,9 @@ const MovieItem = (props) => {
         <div>
             <Card style={{ width: '18rem' }}>
                 <Card.Body style={{textAlign: 'center'}}> {/*Centred the text within the card*/}
-                    <Card.Title >{props.mymovie.Title}</Card.Title>
-                    <Card.Img src={props.mymovie.Poster}></Card.Img>
-                    <footer>{props.mymovie.Year}</footer>
+                    <Card.Title >{props.mymovie.title}</Card.Title>
+                    <Card.Img src={props.mymovie.poster}></Card.Img>
+                    <footer>{props.mymovie.year}</footer>
                 </Card.Body>
             </Card>
         </div>
