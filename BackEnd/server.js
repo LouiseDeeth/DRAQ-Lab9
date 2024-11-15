@@ -31,6 +31,24 @@ const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+//Mongoose is an Object Data Modeling (ODM) library for MongoDB and Node.js. It provides a schema-based solution for modeling 
+//application data, allowing developers to enforce structure, handle data relationships, and perform CRUD operations (Create, 
+//Read, Update, Delete) more easily. By defining models for each data type, Mongoose ensures data consistency and helps simplify database interactions.
+const mongoose = require('mongoose');
+mongoose.connect('mongodb+srv://admin:admin@clusterdatareplab7.f2idw.mongodb.net/MyFirstDB');
+
+//a data model is a blueprint for defining the structure of data within a MongoDB collection. Models are created from schemas, which specify the fields, 
+//data types, and constraints for each document in a collection, ensuring consistency in the way data is stored and accessed.
+
+//Define schema and data model
+const movieSchema = new mongoose.Schema({
+    title: String,
+    year: String,
+    poster: String
+  });
+ 
+const movieModel = new mongoose.model('myMovies', movieSchema);
+
 //Add a movies route that returns a list of movie objects in JSON format
 app.get('/api/movies', (req, res) => {
     const movies = [
@@ -59,9 +77,15 @@ app.get('/api/movies', (req, res) => {
     res.status(200).json({ movies });
 });
 
-app.post('/api/movies',(req, res) =>{
+//method to add new movie records
+app.post('/api/movies', async (req, res) =>{
     console.log("Movies: "+req.body.title);
-    res.send("movies received")
+    const { title, year, poster } = req.body;
+
+    const newMovie = new movieModel({ title, year, poster });
+    await newMovie.save();
+
+    res.status(201).json({ message: 'Movie created successfully', movie: newMovie });
 })
 
 app.listen(port, () => {
