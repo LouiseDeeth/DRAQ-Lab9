@@ -61,6 +61,22 @@ app.get('/api/movie/:id', async (req, res) => {
     /*res.send(movie);  // same as line above*/
   });
 
+//This route fetches a specific movie by its ID. It’s used to retrieve the current movie 
+//details, which are shown in the edit form. The :id parameter represents the movie’s 
+//unique identifier. The server looks up this movie in the database and sends its details back to the client.
+app.get('/api/movie/:id', async (req, res) => {
+    let movie = await movieModel.findById({ _id: req.params.id });
+    res.send(movie);
+});
+
+//This route updates a specific movie’s information. When the user submits the edited data, this 
+//route takes the updated details from req.body and updates the movie in the database. The server
+// then returns the updated movie details to confirm the change.
+app.put('/api/movie/:id', async (req, res) => {
+    let movie = await movieModel.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    res.send(movie);
+});
+
 //method to add new movie records
 app.post('/api/movies', async (req, res) =>{
     console.log("Movies: "+req.body.title);
